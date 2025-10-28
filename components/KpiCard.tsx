@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Card, CardContent } from './ui/Card';
+import { Card, CardContent } from '@/components/ui/card';
 
 type Tone = "ok" | "warn" | "bad";
 
@@ -14,21 +14,21 @@ interface KpiCardProps {
 
 export const KpiCard: React.FC<KpiCardProps> = ({ title, value, subtitle, tone, highlight }) => {
   const toneClasses = {
-    ok: 'border-green-500',
-    warn: 'border-yellow-500',
-    bad: 'border-red-500'
-  };
-  
-  const borderClass = highlight 
-    ? 'border-blue-500' 
-    : (tone ? toneClasses[tone] : 'border-gray-200');
+    ok: 'border-emerald-400',
+    warn: 'border-amber-400',
+    bad: 'border-rose-500'
+  } satisfies Record<Tone, string>;
+
+  const borderClass = highlight
+    ? 'border-brand'
+    : (tone ? toneClasses[tone] : 'border-border');
 
   return (
-    <Card className={`shadow-sm border-t-4 ${borderClass}`}>
-      <CardContent className="pt-5 pb-5">
-        <div className="text-sm text-gray-600">{title}</div>
-        <div className="text-3xl font-semibold mt-1">{value}</div>
-        {subtitle && <div className="text-xs text-gray-500 mt-1">{subtitle}</div>}
+    <Card className={`border-t-4 bg-card/80 shadow-sm backdrop-blur ${borderClass}`}>
+      <CardContent className="space-y-1 px-6 py-5">
+        <div className="text-sm text-muted-foreground">{title}</div>
+        <div className="text-3xl font-semibold text-foreground">{value}</div>
+        {subtitle && <div className="text-xs text-muted-foreground">{subtitle}</div>}
       </CardContent>
     </Card>
   );

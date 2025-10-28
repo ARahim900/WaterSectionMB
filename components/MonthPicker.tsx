@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { YM } from '../types';
-import { Card } from './ui/Card';
-import { Button } from './ui/Button';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { MONTH_INDEX } from '../utils/dataUtils';
 
 interface MonthPickerProps {
@@ -43,17 +43,17 @@ export const MonthPicker: React.FC<MonthPickerProps> = ({
   return (
     <>
       <div className="fixed inset-0 bg-black/10 z-40" onClick={onClose} />
-      <Card className="absolute top-full mt-2 w-72 bg-white shadow-xl z-50 p-3">
-        <div className="flex items-center justify-between mb-3">
+      <Card className="absolute top-full z-50 mt-2 w-72 border border-border/70 bg-card shadow-xl">
+        <div className="flex items-center justify-between px-3 pt-3">
           <Button variant="ghost" size="icon" onClick={() => setDisplayYear(y => y - 1)} disabled={displayYear <= minYear}>
             &lt;
           </Button>
-          <span className="font-semibold text-gray-800">{displayYear}</span>
+          <span className="font-semibold text-sm text-foreground">{displayYear}</span>
           <Button variant="ghost" size="icon" onClick={() => setDisplayYear(y => y + 1)} disabled={displayYear >= maxYear}>
             &gt;
           </Button>
         </div>
-        <div className="grid grid-cols-4 gap-1">
+        <div className="grid grid-cols-4 gap-1 p-3">
           {MONTH_NAMES.map((monthName, index) => {
             const monthNumber = index + 1;
             const currentYm = { y: displayYear, m: monthNumber };
@@ -75,9 +75,9 @@ export const MonthPicker: React.FC<MonthPickerProps> = ({
                 disabled={isDisabled}
                 onClick={() => handleMonthClick(monthNumber)}
                 className={`p-2 rounded-md text-sm text-center transition-colors
-                  ${isSelected ? 'bg-gray-900 text-white font-semibold' : ''}
-                  ${!isSelected && !isDisabled ? 'hover:bg-gray-100' : ''}
-                  ${isDisabled ? 'text-gray-300 cursor-not-allowed' : 'text-gray-700'}
+                  ${isSelected ? 'bg-primary text-primary-foreground font-semibold' : ''}
+                  ${!isSelected && !isDisabled ? 'hover:bg-accent hover:text-accent-foreground' : ''}
+                  ${isDisabled ? 'text-muted-foreground/50 cursor-not-allowed' : 'text-foreground'}
                 `}
               >
                 {monthName}

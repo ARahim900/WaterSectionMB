@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { fmtNum } from '../utils/dataUtils';
 
 interface RingGaugeProps {

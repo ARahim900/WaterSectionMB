@@ -4,16 +4,26 @@ import {
   ResponsiveContainer, LineChart, Line, AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush
 } from "recharts";
+import { FileSpreadsheet, Share2, Sparkles, UploadCloud } from "lucide-react";
 import { RawRow, FactRow, MonthMetrics, YM } from '../types';
 import { 
   unpivotRows, calculateMetricsByMonth, groupBy, normalizeType, 
   keyYM, fmtNum, pct, isNear, monthLabel 
 } from '../utils/dataUtils';
-import { Card, CardHeader, CardTitle, CardContent } from "./ui/Card";
-import { Button } from "./ui/Button";
-import { Badge } from "./ui/Badge";
-import { Input } from "./ui/Input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/Tabs";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { HeroSection } from "@/components/ui/hero-section";
+import { Icons } from "@/components/ui/icons";
 import { KpiCard } from "./KpiCard";
 import { RingGauge } from "./RingGauge";
 import { MonthPicker } from "./MonthPicker";
@@ -199,12 +209,111 @@ const Dashboard: React.FC = () => {
 
   if (facts.length === 0) {
     return (
-        <div className="flex flex-col items-center justify-center h-[calc(100vh-4rem)]">
-            <h1 className="text-2xl font-semibold mb-2">Water Management Dashboard</h1>
-            <p className="text-gray-500 mb-6">Upload a CSV file to begin analysis.</p>
-            <Button onClick={() => fileRef.current?.click()}>Upload CSV</Button>
-            <Input ref={fileRef} type="file" accept=".csv" onChange={onFile} className="hidden" />
+      <div className="space-y-12 pb-16">
+        <HeroSection
+          badge={{
+            text: "Smart distribution insights",
+            action: {
+              text: "View sample report",
+              href: "https://water.example.com/report",
+            },
+          }}
+          title="Upload your network data and unlock instant analytics"
+          description="Bring in your monthly consumption records and uncover hidden losses, efficiency trends, and actionable KPIs in a single dashboard."
+          actions={[
+            {
+              text: "Upload CSV",
+              href: "#upload",
+              variant: "glow",
+              icon: <UploadCloud className="h-5 w-5" />,
+              onClick: (event) => {
+                event.preventDefault();
+                fileRef.current?.click();
+              },
+            },
+            {
+              text: "Read upload guide",
+              href: "#upload-guide",
+              icon: <Icons.gitHub className="h-5 w-5" />,
+            },
+          ]}
+          image={{
+            light:
+              "https://images.unsplash.com/photo-1523875194681-bedd468c58bf?auto=format&fit=crop&w=1248&q=80",
+            dark:
+              "https://images.unsplash.com/photo-1503424886308-418b744a73a3?auto=format&fit=crop&w=1248&q=80",
+            alt: "Water network analytics dashboard preview",
+          }}
+        />
+
+        <div id="upload" className="mx-auto w-full max-w-4xl -mt-24">
+          <Card className="relative overflow-hidden border-dashed border-2 border-border bg-card/70 shadow-xl backdrop-blur">
+            <CardHeader className="gap-2 text-center">
+              <Badge variant="outline" className="mx-auto">Step 1</Badge>
+              <CardTitle className="text-2xl">Upload your CSV data</CardTitle>
+              <CardDescription>
+                Drop in a CSV export that includes meter labels, account numbers, consumption per month, and any available zone metadata.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center gap-6 text-center">
+              <div className="flex w-full flex-col items-center gap-3 rounded-2xl border border-dashed border-muted-foreground/40 bg-background/60 px-8 py-12">
+                <UploadCloud className="h-12 w-12 text-brand" />
+                <div>
+                  <p className="text-lg font-semibold">Drag &amp; drop your CSV here</p>
+                  <p className="text-sm text-muted-foreground">or click the button below to browse from your device</p>
+                </div>
+                <Button variant="glow" size="lg" onClick={() => fileRef.current?.click()}>
+                  Choose file
+                </Button>
+                <Input
+                  ref={fileRef}
+                  type="file"
+                  accept=".csv"
+                  onChange={onFile}
+                  className="hidden"
+                />
+                <p className="text-xs text-muted-foreground">Accepted format: UTF-8 CSV (max 10MB)</p>
+              </div>
+
+              <div className="grid w-full gap-4 text-left sm:grid-cols-3">
+                {[
+                  {
+                    title: "Automatic parsing",
+                    description: "We use PapaParse to validate headers and normalize meter data instantly.",
+                    icon: <FileSpreadsheet className="h-5 w-5 text-brand" />,
+                  },
+                  {
+                    title: "Smart defaults",
+                    description: "Meter groupings, KPIs, and charts update immediately once data is loaded.",
+                    icon: <Sparkles className="h-5 w-5 text-brand" />,
+                  },
+                  {
+                    title: "Download-ready",
+                    description: "Export KPI snapshots or share dynamic charts with your operations team.",
+                    icon: <Share2 className="h-5 w-5 text-brand" />,
+                  },
+                ].map((feature) => (
+                  <Card key={feature.title} className="h-full border border-border/60 bg-background/70 p-4 text-left shadow-none">
+                    <div className="flex items-center gap-3">
+                      {feature.icon}
+                      <p className="font-semibold text-sm text-foreground">{feature.title}</p>
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter id="upload-guide" className="flex flex-col items-start gap-2 rounded-b-2xl bg-muted/40 p-6 text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">Template tips</span>
+              <ul className="list-inside list-disc space-y-1">
+                <li>Include columns for <strong>year</strong>, <strong>month</strong>, <strong>meter_label</strong>, <strong>qty_m3</strong>, and optional <strong>zone</strong>.</li>
+                <li>Ensure numeric values use a dot (<code>.</code>) as decimal separator.</li>
+                <li>Remove any subtotal rows so the parser focuses on raw meter readings.</li>
+              </ul>
+            </CardFooter>
+          </Card>
         </div>
+      </div>
     );
   }
 
