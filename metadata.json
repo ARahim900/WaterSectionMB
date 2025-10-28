@@ -1,0 +1,5 @@
+{
+  "name": "Water Management Dashboard",
+  "description": "An interactive dashboard to upload, visualize, and analyze daily water consumption data from a CSV file. It helps in identifying water loss by comparing bulk meter readings with sub-meter consumption across different zones.",
+  "requestFramePermissions": []
+}
